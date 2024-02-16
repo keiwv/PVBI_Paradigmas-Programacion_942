@@ -1,3 +1,4 @@
 # Git & Github
-## Practica 0 - 00372781
-Using this branch as a test
+## Practica 0
+Nombre: Brayan Ivan Perez Ventura
+Matricula: 00372781
