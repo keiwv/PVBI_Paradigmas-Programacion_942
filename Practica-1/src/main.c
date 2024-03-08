@@ -23,8 +23,8 @@ typedef enum
 // GameScene updateMenu();
 void drawMenu();
 
-void updateGame(SnakeNode *head, Fruit fruit);
-void drawGame(SnakeNode *head);
+Fruit updateGame(SnakeNode *head, Fruit fruit);
+void drawGame(SnakeNode *head, Fruit fruit);
 
 //***************** USEFUL FUNCTIONS **************
 void centerTextYandX(const char *text, int fontSize, int y, int x, Color color);
@@ -33,14 +33,14 @@ Fruit getFruitRandom();
 int main()
 {
 
+    srand(time(NULL));
     InitWindow(screenWidth, screenHeight, "Snake Game");
 
     SetTargetFPS(5);
     GameScene Scene = PLAY;
-    SnakeNode *head = initializeSnake((int)MAX_COL/2, (int)MAX_ROWS/2);
+    SnakeNode *head = initializeSnake((int)MAX_COL / 2, (int)MAX_ROWS / 2);
     Fruit fruit = getFruitRandom();
 
-    srand(time(NULL));
 
     while (!WindowShouldClose())
     {
@@ -51,8 +51,8 @@ int main()
             drawMenu();
             break;
         case PLAY:
-            //updateGame(head, fruit);
-            drawGame(head);
+            fruit = updateGame(head, fruit);
+            drawGame(head, fruit);
             break;
 
         default:
@@ -78,18 +78,20 @@ void drawMenu()
     EndDrawing();
 }
 
-void updateGame(SnakeNode *head, Fruit fruit)
+Fruit updateGame(SnakeNode *head, Fruit fruit)
 {
     if (head->MainSnake.posX == fruit.posX)
     {
         if (head->MainSnake.posY == fruit.posY)
         {
             addNode(head);
+            return getFruitRandom();
         }
     }
+    return fruit;
 }
 
-void drawGame(SnakeNode *head)
+void drawGame(SnakeNode *head, Fruit fruit)
 {
     int totalHeight = MAX_ROWS * (RECT_HEIGHT + 2);
     int totalWidth = MAX_COL * (RECT_WIDTH + 2);
@@ -121,9 +123,12 @@ void drawGame(SnakeNode *head)
         currentNode = currentNode->next;
     }
 
+    int postFruitX = startX + fruit.posX * (RECT_WIDTH + 2);
+    int postFruitY = startY + fruit.posY * (RECT_HEIGHT + 2);
+    DrawRectangle(postFruitX, postFruitY, RECT_WIDTH, RECT_HEIGHT, RED);
+
     EndDrawing();
 }
-
 
 //****************** USEFUL FUNCTIONS *************************
 void centerTextYandX(const char *text, int fontSize, int y, int x, Color color)
@@ -142,7 +147,7 @@ void centerTextYandX(const char *text, int fontSize, int y, int x, Color color)
 Fruit getFruitRandom()
 {
     Fruit fruitTemp;
-    fruitTemp.posX = (MAX_COL - MAX_ROWS + 1);
-    fruitTemp.posY = (MAX_COL - MAX_ROWS + 1);
+    fruitTemp.posX = rand() % (MAX_COL - MAX_ROWS + 1);
+    fruitTemp.posY = rand() % (MAX_COL - MAX_ROWS + 1);
     return fruitTemp;
 }
