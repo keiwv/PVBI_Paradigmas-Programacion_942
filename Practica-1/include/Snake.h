@@ -3,7 +3,7 @@
 #include "snakeStructures.h"
 
 
-SnakeNode *CreateNodo(int score, int tailLength)
+SnakeNode *createNode()
 {
     SnakeNode *NewNode = (SnakeNode * )malloc(sizeof(SnakeNode));
     if (NewNode == NULL)
@@ -11,20 +11,32 @@ SnakeNode *CreateNodo(int score, int tailLength)
         printf("Node couldn't be created. Missing memory.");
         return 0;
     }
-    NewNode->MainSnake.score = score;
-    NewNode->MainSnake.tailLength = tailLength;
     NewNode->next = NULL;
     return NewNode;
 }
 
-void DeleteNode(SnakeNode *head)
+void deleteSnake(SnakeNode **head)
 {
-    SnakeNode *tempNode = CreateNodo(0,0);
-    tempNode = head;
-
-    while (tempNode->next)
+    SnakeNode *tempNode = *head;
+    while (tempNode != NULL)
     {
-        
+        SnakeNode *nextNode = tempNode->next;
+        free(tempNode);
+        tempNode = nextNode;
     }
-    
+
+    *head = NULL;
+}
+
+void addNode(SnakeNode **head)
+{
+    SnakeNode *newNode = createNode();
+    if (newNode == NULL)
+    {
+        printf("Failed to create a new node.");
+        return;
+    }
+
+    newNode->next = *head;
+    *head = newNode;
 }
