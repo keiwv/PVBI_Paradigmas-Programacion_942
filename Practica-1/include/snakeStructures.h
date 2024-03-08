@@ -1,9 +1,7 @@
 typedef struct _Snake 
 {
-    int right;
-    int left;
-    int top;
-    int bottom;
+    int posX;
+    int posY;
 } Snake;
 
 typedef struct _SnakeNode
@@ -12,6 +10,12 @@ typedef struct _SnakeNode
     struct _SnakeNode *next;
 } SnakeNode;
 
-SnakeNode *createNodo();
+typedef struct _Fruit
+{
+    int posX;
+    int posY;
+} Fruit;
+
+SnakeNode *createNode();
 void deleteSnake(SnakeNode **head);
-void addNode(SnakeNode **head);
+void addNode(SnakeNode *head);

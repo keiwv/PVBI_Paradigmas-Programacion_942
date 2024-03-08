@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include <stdio.h>
 #include "Snake.h"
+#include <time.h>
 
 #define MAX_COL 30
 #define MAX_ROWS 16
@@ -22,19 +23,24 @@ typedef enum
 // GameScene updateMenu();
 void drawMenu();
 
-// void updateGame();
-void drawGame();
+void updateGame(SnakeNode *head, Fruit fruit);
+void drawGame(SnakeNode *head);
 
 //***************** USEFUL FUNCTIONS **************
 void centerTextYandX(const char *text, int fontSize, int y, int x, Color color);
+Fruit getFruitRandom();
 
 int main()
 {
 
     InitWindow(screenWidth, screenHeight, "Snake Game");
 
-    SetTargetFPS(60);
+    SetTargetFPS(5);
     GameScene Scene = PLAY;
+    SnakeNode *head = initializeSnake((int)MAX_COL/2, (int)MAX_ROWS/2);
+    Fruit fruit = getFruitRandom();
+
+    srand(time(NULL));
 
     while (!WindowShouldClose())
     {
@@ -45,8 +51,8 @@ int main()
             drawMenu();
             break;
         case PLAY:
-            // updateGame();
-            drawGame();
+            //updateGame(head, fruit);
+            drawGame(head);
             break;
 
         default:
@@ -72,17 +78,29 @@ void drawMenu()
     EndDrawing();
 }
 
-/*void updateGame()
+void updateGame(SnakeNode *head, Fruit fruit)
 {
-}*/
-void drawGame()
+    if (head->MainSnake.posX == fruit.posX)
+    {
+        if (head->MainSnake.posY == fruit.posY)
+        {
+            addNode(head);
+        }
+    }
+}
+
+void drawGame(SnakeNode *head)
 {
     int totalHeight = MAX_ROWS * (RECT_HEIGHT + 2);
     int totalWidth = MAX_COL * (RECT_WIDTH + 2);
 
     int startX = (screenWidth - totalWidth) / 2;
     int startY = (screenHeight - totalHeight) / 2;
+    SnakeNode *currentNode = head;
+    currentNode->MainSnake.posX++;
     BeginDrawing();
+
+    ClearBackground(BLACK);
     for (int i = 0; i < MAX_COL; i++)
     {
         for (int j = 0; j < MAX_ROWS; j++)
@@ -90,12 +108,24 @@ void drawGame()
             int posX = startX + i * (RECT_WIDTH + 2);
             int posY = startY + j * (RECT_HEIGHT + 2);
 
-            DrawRectangle(posX, posY, RECT_HEIGHT, RECT_WIDTH, WHITE);
+            DrawRectangle(posX, posY, RECT_WIDTH, RECT_HEIGHT, WHITE);
         }
     }
+
+    while (currentNode != NULL)
+    {
+        int posX = startX + currentNode->MainSnake.posX * (RECT_WIDTH + 2);
+        int posY = startY + currentNode->MainSnake.posY * (RECT_HEIGHT + 2);
+
+        DrawRectangle(posX, posY, RECT_WIDTH, RECT_HEIGHT, GREEN);
+        currentNode = currentNode->next;
+    }
+
     EndDrawing();
 }
 
+
+//****************** USEFUL FUNCTIONS *************************
 void centerTextYandX(const char *text, int fontSize, int y, int x, Color color)
 {
     int textWidth;
@@ -107,4 +137,12 @@ void centerTextYandX(const char *text, int fontSize, int y, int x, Color color)
     PosY = ((screenHeight - fontSize) / 2) + y;
 
     DrawText(text, PosX, PosY, fontSize, color);
+}
+
+Fruit getFruitRandom()
+{
+    Fruit fruitTemp;
+    fruitTemp.posX = (MAX_COL - MAX_ROWS + 1);
+    fruitTemp.posY = (MAX_COL - MAX_ROWS + 1);
+    return fruitTemp;
 }
