@@ -41,7 +41,6 @@ int main()
     SnakeNode *head = initializeSnake((int)MAX_COL / 2, (int)MAX_ROWS / 2);
     Fruit fruit = getFruitRandom();
 
-
     while (!WindowShouldClose())
     {
         switch (Scene)
@@ -98,6 +97,16 @@ void drawGame(SnakeNode *head, Fruit fruit)
 
     int startX = (screenWidth - totalWidth) / 2;
     int startY = (screenHeight - totalHeight) / 2;
+
+    int posXSnake;
+    int posYSnake;
+
+    int posX;
+    int posY;
+
+    int posFruitX;
+    int posFruitY;
+
     SnakeNode *currentNode = head;
     currentNode->MainSnake.posX++;
     BeginDrawing();
@@ -107,8 +116,8 @@ void drawGame(SnakeNode *head, Fruit fruit)
     {
         for (int j = 0; j < MAX_ROWS; j++)
         {
-            int posX = startX + i * (RECT_WIDTH + 2);
-            int posY = startY + j * (RECT_HEIGHT + 2);
+            posX = startX + i * (RECT_WIDTH + 2);
+            posY = startY + j * (RECT_HEIGHT + 2);
 
             DrawRectangle(posX, posY, RECT_WIDTH, RECT_HEIGHT, WHITE);
         }
@@ -116,16 +125,16 @@ void drawGame(SnakeNode *head, Fruit fruit)
 
     while (currentNode != NULL)
     {
-        int posX = startX + currentNode->MainSnake.posX * (RECT_WIDTH + 2);
-        int posY = startY + currentNode->MainSnake.posY * (RECT_HEIGHT + 2);
+        posXSnake = startX + currentNode->MainSnake.posX * (RECT_WIDTH + 2);
+        posYSnake = startY + currentNode->MainSnake.posY * (RECT_HEIGHT + 2);
 
-        DrawRectangle(posX, posY, RECT_WIDTH, RECT_HEIGHT, GREEN);
+        DrawRectangle(posXSnake, posYSnake, RECT_WIDTH, RECT_HEIGHT, GREEN);
         currentNode = currentNode->next;
     }
 
-    int postFruitX = startX + fruit.posX * (RECT_WIDTH + 2);
-    int postFruitY = startY + fruit.posY * (RECT_HEIGHT + 2);
-    DrawRectangle(postFruitX, postFruitY, RECT_WIDTH, RECT_HEIGHT, RED);
+    posFruitX = startX + fruit.posX * (RECT_WIDTH + 2);
+    posFruitY = startY + fruit.posY * (RECT_HEIGHT + 2);
+    DrawRectangle(posFruitX, posFruitY, RECT_WIDTH, RECT_HEIGHT, RED);
 
     EndDrawing();
 }
