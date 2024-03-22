@@ -68,6 +68,7 @@ int main()
     }
 
     CloseWindow();
+    deleteSnake(head);
     return 0;
 }
 
@@ -148,25 +149,7 @@ void drawGame(SnakeNode *head, Fruit fruit)
 }
 void updatePosition(int *buttonPressed, SnakeNode *head)
 {
-    switch (*buttonPressed)
-    {
-    case STOP:
-        // Snake doesn't move until the player presses a key.
-        break;
-    case LEFT:
-        head->MainSnake.posX--;
-        break;
-    case RIGHT:
-        head->MainSnake.posX++;
-        break;
-    case TOP:
-        head->MainSnake.posY--;
-        break;
-    case DOWN:
-        head->MainSnake.posY++;
-        break;
-    }
-    
+
     if (IsKeyPressed(KEY_S))
     {
         *buttonPressed = DOWN;
@@ -185,7 +168,24 @@ void updatePosition(int *buttonPressed, SnakeNode *head)
         *buttonPressed = LEFT;
     }
 
-    
+    switch (*buttonPressed)
+    {
+    case STOP:
+        // Snake doesn't move until the player presses a key.
+        break;
+    case LEFT:
+        head->MainSnake.posX--;
+        break;
+    case RIGHT:
+        head->MainSnake.posX++;
+        break;
+    case TOP:
+        head->MainSnake.posY--;
+        break;
+    case DOWN:
+        head->MainSnake.posY++;
+        break;
+    }
 }
 
 //****************** USEFUL FUNCTIONS *************************

@@ -17,5 +17,5 @@ typedef struct _Fruit
 } Fruit;
 
 SnakeNode *createNode();
-void deleteSnake(SnakeNode **head);
+void deleteSnake(SnakeNode *head);
 void addNode(SnakeNode *head);

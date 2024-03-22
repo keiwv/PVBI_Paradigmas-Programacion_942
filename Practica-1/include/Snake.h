@@ -14,17 +14,19 @@ SnakeNode *createNode()
     return NewNode;
 }
 
-void deleteSnake(SnakeNode **head)
+void deleteSnake(SnakeNode *head)
 {
-    SnakeNode *tempNode = *head;
+    SnakeNode *tempNode = head;
+    SnakeNode *nextNode;
     while (tempNode != NULL)
     {
-        SnakeNode *nextNode = tempNode->next;
+        nextNode = tempNode->next;
         free(tempNode);
         tempNode = nextNode;
     }
 
-    *head = NULL;
+    head = NULL;
+    printf("INFO: Snake deleted successfully");
 }
 
 void addNode(SnakeNode *head)
