@@ -292,16 +292,16 @@ typedef struct CoreData {
     struct {
         struct {
             int exitKey;                    // Default exit key
-            char currentKeyState[MAX_KEYBOARD_KEYS]; // Registers current frame key state
-            char previousKeyState[MAX_KEYBOARD_KEYS]; // Registers previous frame key state
+            char currentKeyState[MAX_KEYBOARD_KEYS];        // Registers current frame key state
+            char previousKeyState[MAX_KEYBOARD_KEYS];       // Registers previous frame key state
 
             // NOTE: Since key press logic involves comparing prev vs cur key state, we need to handle key repeats specially
-            char keyRepeatInFrame[MAX_KEYBOARD_KEYS]; // Registers key repeats for current frame.
+            char keyRepeatInFrame[MAX_KEYBOARD_KEYS];       // Registers key repeats for current frame.
 
-            int keyPressedQueue[MAX_KEY_PRESSED_QUEUE]; // Input keys queue
+            int keyPressedQueue[MAX_KEY_PRESSED_QUEUE];     // Input keys queue
             int keyPressedQueueCount;       // Input keys queue count
 
-            int charPressedQueue[MAX_CHAR_PRESSED_QUEUE]; // Input characters queue (unicode)
+            int charPressedQueue[MAX_CHAR_PRESSED_QUEUE];   // Input characters queue (unicode)
             int charPressedQueueCount;      // Input characters queue count
 
         } Keyboard;
@@ -331,7 +331,7 @@ typedef struct CoreData {
         } Touch;
         struct {
             int lastButtonPressed;          // Register last gamepad button pressed
-            int axisCount[MAX_GAMEPADS];                  // Register number of available gamepad axis
+            int axisCount[MAX_GAMEPADS];    // Register number of available gamepad axis
             bool ready[MAX_GAMEPADS];       // Flag to know if gamepad is ready
             char name[MAX_GAMEPADS][64];    // Gamepad name holder
             char currentButtonState[MAX_GAMEPADS][MAX_GAMEPAD_BUTTONS];     // Current gamepad buttons state
@@ -1406,21 +1406,21 @@ void SetShaderValueTexture(Shader shader, int locIndex, Texture2D texture)
 // Module Functions Definition: Screen-space Queries
 //----------------------------------------------------------------------------------
 
-// Get a ray trace from mouse position
-Ray GetMouseRay(Vector2 mousePosition, Camera camera)
+// Get a ray trace from screen position (i.e mouse)
+Ray GetScreenToWorldRay(Vector2 position, Camera camera)
 {
-    return GetViewRay(mousePosition, camera, (float)GetScreenWidth(), (float)GetScreenHeight());
+    return GetScreenToWorldRayEx(position, camera, (float)GetScreenWidth(), (float)GetScreenHeight());
 }
 
-// Get a ray trace from the mouse position within a specific section of the screen
-Ray GetViewRay(Vector2 mousePosition, Camera camera, float width, float height)
+// Get a ray trace from the screen position (i.e mouse) within a specific section of the screen
+Ray GetScreenToWorldRayEx(Vector2 position, Camera camera, float width, float height)
 {
     Ray ray = { 0 };
 
     // Calculate normalized device coordinates
     // NOTE: y value is negative
-    float x = (2.0f*mousePosition.x)/width - 1.0f;
-    float y = 1.0f - (2.0f*mousePosition.y)/height;
+    float x = (2.0f*position.x)/width - 1.0f;
+    float y = 1.0f - (2.0f*position.y)/height;
     float z = 1.0f;
 
     // Store values in a vector

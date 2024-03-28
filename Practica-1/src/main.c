@@ -8,6 +8,7 @@
 
 #define RECT_WIDTH 35
 #define RECT_HEIGHT 35
+#define SNAKE_SPEED 5
 
 #define LEFT 1
 #define RIGHT 2
@@ -29,13 +30,14 @@ typedef enum
 // GameScene updateMenu();
 void drawMenu();
 
-Fruit updateGame(SnakeNode *head, Fruit fruit, int *buttonPressed);
-void drawGame(SnakeNode *head, Fruit fruit);
+void updateGame(SnakeNode *head, Fruit *fruit);
+void drawGame(SnakeNode *head, Fruit fruit, float deltaTime);
 
 //***************** USEFUL FUNCTIONS **************
 void centerTextYandX(const char *text, int fontSize, int y, int x, Color color);
 Fruit getFruitRandom();
-void updatePosition(int *buttonPressed, SnakeNode *head);
+void updatePosition(int buttonPressed, SnakeNode *head);
+void updateDirection(int *buttonPressed);
 
 int main()
 {
@@ -47,10 +49,17 @@ int main()
     GameScene Scene = PLAY;
     SnakeNode *head = initializeSnake((int)MAX_COL / 2, (int)MAX_ROWS / 2);
     int buttonPressed = STOP;
+    float deltaTime;
+    float elapsedTime = 0.0f;
+    SetTargetFPS(165);
     Fruit fruit = getFruitRandom();
 
     while (!WindowShouldClose())
     {
+        deltaTime = GetFrameTime();
+        printf("X: %d, Y: %d\n", head->MainSnake.posX, head->MainSnake.posY);
+        elapsedTime += deltaTime;
+        // printf("DELTATIME: %f\n", deltaTime);
         switch (Scene)
         {
         case MAIN_MENU:
@@ -58,8 +67,15 @@ int main()
             drawMenu();
             break;
         case PLAY:
-            fruit = updateGame(head, fruit, &buttonPressed);
-            drawGame(head, fruit);
+            updateDirection(&buttonPressed);
+            if (elapsedTime >= 1.0f / SNAKE_SPEED)
+            {
+                updatePosition(buttonPressed, head);
+                elapsedTime = 0.0f;
+            }
+            updateGame(head, &fruit);
+            // printf("%.2f\n", elapsedTime);
+            drawGame(head, fruit, deltaTime);
             break;
 
         default:
@@ -68,6 +84,7 @@ int main()
     }
 
     CloseWindow();
+
     deleteSnake(head);
     return 0;
 }
@@ -86,21 +103,19 @@ void drawMenu()
     EndDrawing();
 }
 
-Fruit updateGame(SnakeNode *head, Fruit fruit, int *buttonPressed)
+void updateGame(SnakeNode *head, Fruit *fruit)
 {
-    updatePosition(buttonPressed, head);
-    if (head->MainSnake.posX == fruit.posX)
+    if (head->MainSnake.posX == fruit->posX)
     {
-        if (head->MainSnake.posY == fruit.posY)
+        if (head->MainSnake.posY == fruit->posY)
         {
             addNode(head);
-            return getFruitRandom();
+            *fruit = getFruitRandom();
         }
     }
-    return fruit;
 }
 
-void drawGame(SnakeNode *head, Fruit fruit)
+void drawGame(SnakeNode *head, Fruit fruit, float deltaTime)
 {
     int totalHeight = MAX_ROWS * (RECT_HEIGHT + 2);
     int totalWidth = MAX_COL * (RECT_WIDTH + 2);
@@ -118,6 +133,7 @@ void drawGame(SnakeNode *head, Fruit fruit)
     int posFruitY;
 
     SnakeNode *currentNode = head;
+
     BeginDrawing();
 
     ClearBackground(BLACK);
@@ -138,6 +154,7 @@ void drawGame(SnakeNode *head, Fruit fruit)
         posYSnake = startY + currentNode->MainSnake.posY * (RECT_HEIGHT + 1);
 
         DrawRectangle(posXSnake, posYSnake, RECT_WIDTH, RECT_HEIGHT, GREEN);
+        // printf("X: %d, Y: %d\n", currentNode->MainSnake.posX, currentNode->MainSnake.posY);
         currentNode = currentNode->next;
     }
 
@@ -147,32 +164,29 @@ void drawGame(SnakeNode *head, Fruit fruit)
 
     EndDrawing();
 }
-void updatePosition(int *buttonPressed, SnakeNode *head)
+
+void updatePosition(int buttonPressed, SnakeNode *head)
 {
+    SnakeNode *current = head->next;
+    SnakeNode *previous = head;
+    int prevX, prevY;
+    prevX = head->MainSnake.posX;
+    prevY = head->MainSnake.posY;
 
-    if (IsKeyPressed(KEY_S))
+    while (current != NULL)
     {
-        *buttonPressed = DOWN;
-    }
-    if (IsKeyPressed(KEY_W))
-    {
-        *buttonPressed = TOP;
-    }
-    if (IsKeyPressed(KEY_D))
-    {
-        *buttonPressed = RIGHT;
+        int tempX = current->MainSnake.posX;
+        int tempY = current->MainSnake.posY;
+        current->MainSnake.posX = prevX;
+        current->MainSnake.posY = prevY;
+        prevX = tempX;
+        prevY = tempY;
+
+        current = current->next;
     }
 
-    if (IsKeyPressed(KEY_A))
+    switch (buttonPressed)
     {
-        *buttonPressed = LEFT;
-    }
-
-    switch (*buttonPressed)
-    {
-    case STOP:
-        // Snake doesn't move until the player presses a key.
-        break;
     case LEFT:
         head->MainSnake.posX--;
         break;
@@ -208,4 +222,24 @@ Fruit getFruitRandom()
     fruitTemp.posX = rand() % (MAX_COL - MAX_ROWS + 1);
     fruitTemp.posY = rand() % (MAX_COL - MAX_ROWS + 1);
     return fruitTemp;
+}
+
+void updateDirection(int *buttonPressed)
+{
+    if (IsKeyPressed(KEY_S))
+    {
+        *buttonPressed = DOWN;
+    }
+    if (IsKeyPressed(KEY_W))
+    {
+        *buttonPressed = TOP;
+    }
+    if (IsKeyPressed(KEY_D))
+    {
+        *buttonPressed = RIGHT;
+    }
+    if (IsKeyPressed(KEY_A))
+    {
+        *buttonPressed = LEFT;
+    }
 }

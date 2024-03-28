@@ -1049,8 +1049,9 @@ RLAPI void SetShaderValueTexture(Shader shader, int locIndex, Texture2D texture)
 RLAPI void UnloadShader(Shader shader);                                    // Unload shader from GPU memory (VRAM)
 
 // Screen-space-related functions
-RLAPI Ray GetMouseRay(Vector2 mousePosition, Camera camera);            // Get a ray trace from mouse position
-RLAPI Ray GetViewRay(Vector2 mousePosition, Camera camera, float width, float height); // Get a ray trace from mouse position in a viewport
+#define GetMouseRay GetScreenToWorldRay     // Compatibility hack for previous raylib versions
+RLAPI Ray GetScreenToWorldRay(Vector2 position, Camera camera);            // Get a ray trace from screen position (i.e mouse)
+RLAPI Ray GetScreenToWorldRayEx(Vector2 position, Camera camera, float width, float height); // Get a ray trace from screen position (i.e mouse) in a viewport
 RLAPI Vector2 GetWorldToScreen(Vector3 position, Camera camera);        // Get the screen space position for a 3d world space position
 RLAPI Vector2 GetWorldToScreenEx(Vector3 position, Camera camera, int width, int height); // Get size position for a 3d world space position
 RLAPI Vector2 GetWorldToScreen2D(Vector2 position, Camera2D camera);    // Get the screen space position for a 2d camera world space position
@@ -1410,7 +1411,7 @@ RLAPI void DrawTextureNPatch(Texture2D texture, NPatchInfo nPatchInfo, Rectangle
 // Color/pixel related functions
 RLAPI bool ColorIsEqual(Color col1, Color col2);                            // Check if two colors are equal
 RLAPI Color Fade(Color color, float alpha);                                 // Get color with alpha applied, alpha goes from 0.0f to 1.0f
-RLAPI int ColorToInt(Color color);                                          // Get hexadecimal value for a Color
+RLAPI int ColorToInt(Color color);                                          // Get hexadecimal value for a Color (0xRRGGBBAA)
 RLAPI Vector4 ColorNormalize(Color color);                                  // Get Color normalized as float [0..1]
 RLAPI Color ColorFromNormalized(Vector4 normalized);                        // Get Color from normalized values [0..1]
 RLAPI Vector3 ColorToHSV(Color color);                                      // Get HSV values for a Color, hue [0..360], saturation/value [0..1]

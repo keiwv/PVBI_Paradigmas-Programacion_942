@@ -10,6 +10,8 @@ SnakeNode *createNode()
         printf("Node couldn't be created. Missing memory.");
         return 0;
     }
+    NewNode->MainSnake.posX = 0;
+    NewNode->MainSnake.posY = 0;
     NewNode->next = NULL;
     return NewNode;
 }
@@ -31,34 +33,33 @@ void deleteSnake(SnakeNode *head)
 
 void addNode(SnakeNode *head)
 {
-    SnakeNode *newNode = (SnakeNode *)malloc(sizeof(SnakeNode));
-    SnakeNode *current = head;
+    if (head == NULL)
+    {
+        printf("Error: Cannot add node to NULL pointer.\n");
+        return;
+    }
 
+    SnakeNode *newNode = createNode();
     if (newNode == NULL)
     {
         printf("Memory allocation failed for new node.\n");
         return;
     }
-    if (head == NULL) {
-        printf("Error: Cannot add node to NULL pointer.\n");
-        return;
-    }
 
+    SnakeNode *current = head;
     while (current->next != NULL)
     {
         current = current->next;
     }
 
-    newNode->MainSnake.posX = current->MainSnake.posX;
-    newNode->MainSnake.posY = current->MainSnake.posY;
-    newNode->next = NULL;
-
     current->next = newNode;
 }
 
-SnakeNode* initializeSnake(int posX, int posY) {
-    SnakeNode* head = createNode();
-    if (head == NULL) {
+SnakeNode *initializeSnake(int posX, int posY)
+{
+    SnakeNode *head = createNode();
+    if (head == NULL)
+    {
         printf("Error: Could not initialize snake.\n");
         return NULL;
     }
@@ -68,4 +69,3 @@ SnakeNode* initializeSnake(int posX, int posY) {
 
     return head;
 }
-

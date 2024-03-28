@@ -1470,9 +1470,6 @@ void DrawMesh(Mesh mesh, Material material, Matrix transform)
         if (mesh.indices != NULL) rlEnableVertexBufferElement(mesh.vboId[6]);
     }
 
-    // WARNING: Disable vertex attribute color input if mesh can not provide that data (despite location being enabled in shader)
-    if (mesh.vboId[3] == 0) rlDisableVertexAttribute(material.shader.locs[SHADER_LOC_VERTEX_COLOR]);
-
     int eyeCount = 1;
     if (rlIsStereoRenderEnabled()) eyeCount = 2;
 
@@ -1690,9 +1687,6 @@ void DrawMeshInstanced(Mesh mesh, Material material, const Matrix *transforms, i
 
         if (mesh.indices != NULL) rlEnableVertexBufferElement(mesh.vboId[6]);
     }
-
-    // WARNING: Disable vertex attribute color input if mesh can not provide that data (despite location being enabled in shader)
-    if (mesh.vboId[3] == 0) rlDisableVertexAttribute(material.shader.locs[SHADER_LOC_VERTEX_COLOR]);
 
     int eyeCount = 1;
     if (rlIsStereoRenderEnabled()) eyeCount = 2;
@@ -5666,7 +5660,7 @@ static Model LoadVOX(const char *fileName)
 
         // Copy indices
         size = voxarray.indices.used*sizeof(unsigned short);
-        pmesh->indices = (float *)RL_MALLOC(size);
+        pmesh->indices = (unsigned short *)RL_MALLOC(size);
         memcpy(pmesh->indices, pindices, size);
 
         pmesh->triangleCount = (pmesh->vertexCount/4)*2;
@@ -5810,6 +5804,12 @@ static Model LoadM3D(const char *fileName)
                 // If no map is provided, or we have colors defined, we allocate storage for vertex colors
                 // M3D specs only consider vertex colors if no material is provided, however raylib uses both and mixes the colors
                 if ((mi == M3D_UNDEF) || vcolor) model.meshes[k].colors = RL_CALLOC(model.meshes[k].vertexCount*4, sizeof(unsigned char));
+                
+                // If no map is provided and we allocated vertex colors, set them to white
+                if ((mi == M3D_UNDEF) && (model.meshes[k].colors != NULL))
+                {
+                    for (int c = 0; c < model.meshes[k].vertexCount*4; c++) model.meshes[k].colors[c] = 255;
+                }
 
                 if (m3d->numbone && m3d->numskin)
                 {
