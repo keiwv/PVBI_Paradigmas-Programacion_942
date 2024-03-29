@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "snakeStructures.h"
 
-SnakeNode *createNode()
+SnakeNode *createNode(Vector2 position)
 {
     SnakeNode *NewNode = (SnakeNode *)malloc(sizeof(SnakeNode));
     if (NewNode == NULL)
@@ -10,8 +10,8 @@ SnakeNode *createNode()
         printf("Node couldn't be created. Missing memory.");
         return 0;
     }
-    NewNode->MainSnake.posX = 0;
-    NewNode->MainSnake.posY = 0;
+    NewNode->MainSnake.posX = position.x;
+    NewNode->MainSnake.posY = position.y;
     NewNode->next = NULL;
     return NewNode;
 }
@@ -28,10 +28,10 @@ void deleteSnake(SnakeNode *head)
     }
 
     head = NULL;
-    printf("INFO: Snake deleted successfully");
+    printf("INFO: Snake deleted successfully\n");
 }
 
-void addNode(SnakeNode *head)
+void addNode(SnakeNode *head, Vector2 position)
 {
     if (head == NULL)
     {
@@ -39,7 +39,7 @@ void addNode(SnakeNode *head)
         return;
     }
 
-    SnakeNode *newNode = createNode();
+    SnakeNode *newNode = createNode(position);
     if (newNode == NULL)
     {
         printf("Memory allocation failed for new node.\n");
@@ -57,7 +57,9 @@ void addNode(SnakeNode *head)
 
 SnakeNode *initializeSnake(int posX, int posY)
 {
-    SnakeNode *head = createNode();
+    Vector2 position = {(float)posX, (float)posY};
+    SnakeNode *head = createNode(position);
+
     if (head == NULL)
     {
         printf("Error: Could not initialize snake.\n");

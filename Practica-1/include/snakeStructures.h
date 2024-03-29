@@ -16,6 +16,6 @@ typedef struct _Fruit
     int posY;
 } Fruit;
 
-SnakeNode *createNode();
+SnakeNode *createNode(Vector2 position);
 void deleteSnake(SnakeNode *head);
-void addNode(SnakeNode *head);
+void addNode(SnakeNode *head, Vector2 position);

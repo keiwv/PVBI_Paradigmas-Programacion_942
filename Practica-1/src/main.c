@@ -36,9 +36,9 @@ void drawGame(SnakeNode *head, Fruit fruit, float deltaTime);
 //***************** USEFUL FUNCTIONS **************
 void centerTextYandX(const char *text, int fontSize, int y, int x, Color color);
 Fruit getFruitRandom();
-void updatePosition(int buttonPressed, SnakeNode *head);
+void updatePosition(int buttonPressed, SnakeNode *head, GameScene *Scene);
 void updateDirection(int *buttonPressed);
-
+void drawSnake(SnakeNode *head, Vector2 start);
 int main()
 {
 
@@ -57,8 +57,8 @@ int main()
     while (!WindowShouldClose())
     {
         deltaTime = GetFrameTime();
-        printf("X: %d, Y: %d\n", head->MainSnake.posX, head->MainSnake.posY);
         elapsedTime += deltaTime;
+        // printf("X: %d, Y: %d\n", head->MainSnake.posX, head->MainSnake.posY);
         // printf("DELTATIME: %f\n", deltaTime);
         switch (Scene)
         {
@@ -70,11 +70,13 @@ int main()
             updateDirection(&buttonPressed);
             if (elapsedTime >= 1.0f / SNAKE_SPEED)
             {
-                updatePosition(buttonPressed, head);
+                updatePosition(buttonPressed, head, &Scene);
                 elapsedTime = 0.0f;
             }
+
             updateGame(head, &fruit);
             // printf("%.2f\n", elapsedTime);
+
             drawGame(head, fruit, deltaTime);
             break;
 
@@ -105,11 +107,13 @@ void drawMenu()
 
 void updateGame(SnakeNode *head, Fruit *fruit)
 {
+
+    Vector2 fruitPosition = {(float)fruit->posX, (float)fruit->posY};
     if (head->MainSnake.posX == fruit->posX)
     {
         if (head->MainSnake.posY == fruit->posY)
         {
-            addNode(head);
+            addNode(head, fruitPosition);
             *fruit = getFruitRandom();
         }
     }
@@ -123,16 +127,11 @@ void drawGame(SnakeNode *head, Fruit fruit, float deltaTime)
     int startX = (screenWidth - totalWidth) / 2;
     int startY = (screenHeight - totalHeight) / 2;
 
-    int posXSnake;
-    int posYSnake;
-
     int posX;
     int posY;
 
     int posFruitX;
     int posFruitY;
-
-    SnakeNode *currentNode = head;
 
     BeginDrawing();
 
@@ -147,16 +146,9 @@ void drawGame(SnakeNode *head, Fruit fruit, float deltaTime)
             DrawRectangle(posX, posY, RECT_WIDTH, RECT_HEIGHT, WHITE);
         }
     }
-
-    while (currentNode != NULL)
-    {
-        posXSnake = startX + currentNode->MainSnake.posX * (RECT_WIDTH + 1);
-        posYSnake = startY + currentNode->MainSnake.posY * (RECT_HEIGHT + 1);
-
-        DrawRectangle(posXSnake, posYSnake, RECT_WIDTH, RECT_HEIGHT, GREEN);
-        // printf("X: %d, Y: %d\n", currentNode->MainSnake.posX, currentNode->MainSnake.posY);
-        currentNode = currentNode->next;
-    }
+    
+    Vector2 start = {(float)startX, (float)startY};
+    drawSnake(head, start);
 
     posFruitX = startX + fruit.posX * (RECT_WIDTH + 1);
     posFruitY = startY + fruit.posY * (RECT_HEIGHT + 1);
@@ -165,18 +157,20 @@ void drawGame(SnakeNode *head, Fruit fruit, float deltaTime)
     EndDrawing();
 }
 
-void updatePosition(int buttonPressed, SnakeNode *head)
+void updatePosition(int buttonPressed, SnakeNode *head, GameScene *Scene)
 {
     SnakeNode *current = head->next;
-    SnakeNode *previous = head;
-    int prevX, prevY;
+    int prevX;
+    int prevY;
+    int tempX;
+    int tempY;
     prevX = head->MainSnake.posX;
     prevY = head->MainSnake.posY;
 
     while (current != NULL)
     {
-        int tempX = current->MainSnake.posX;
-        int tempY = current->MainSnake.posY;
+        tempX = current->MainSnake.posX;
+        tempY = current->MainSnake.posY;
         current->MainSnake.posX = prevX;
         current->MainSnake.posY = prevY;
         prevX = tempX;
@@ -199,6 +193,18 @@ void updatePosition(int buttonPressed, SnakeNode *head)
     case DOWN:
         head->MainSnake.posY++;
         break;
+    }
+    current = head->next;
+    while (current != NULL)
+    {
+        if (head->MainSnake.posX == current->MainSnake.posX)
+        {
+            if (head->MainSnake.posY == current->MainSnake.posY)
+            {
+                *Scene = GAME_OVER;
+            }
+        }
+        current = current->next;
     }
 }
 
@@ -241,5 +247,21 @@ void updateDirection(int *buttonPressed)
     if (IsKeyPressed(KEY_A))
     {
         *buttonPressed = LEFT;
+    }
+}
+
+void drawSnake(SnakeNode *head, Vector2 start)
+{
+    SnakeNode *currentNode = head;
+    int posXSnake;
+    int posYSnake;
+    while (currentNode != NULL)
+    {
+        posXSnake = start.x + currentNode->MainSnake.posX * (RECT_WIDTH + 1);
+        posYSnake = start.y + currentNode->MainSnake.posY * (RECT_HEIGHT + 1);
+
+        DrawRectangle(posXSnake, posYSnake, RECT_WIDTH, RECT_HEIGHT, GREEN);
+        // printf("X: %d, Y: %d\n", currentNode->MainSnake.posX, currentNode->MainSnake.posY);
+        currentNode = currentNode->next;
     }
 }
