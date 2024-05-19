@@ -11,6 +11,9 @@
 #define WHITELIGHT \
     CLITERAL(Color) { 255, 255, 255, 180 }
 
+#define BLACKOPACITY \
+    CLITERAL(Color) { 0, 0, 0, 50 }
+
 #define MAX_COL 30
 #define MAX_ROWS 16
 
@@ -30,13 +33,13 @@ typedef enum
 {
     MAIN_MENU,
     PLAY,
-    PAUSE_MENU,
-    GAME_OVER
+    GAME_OVER,
+    LEAVE,
 } GameScene;
 
 //***************** SCENES FUNCTIONS **************
-// GameScene updateMenu();
-void drawMenu();
+GameScene updateMenu(bool *isMouseOnTextJugar, bool *isMouseOnTextSalir);
+void drawMenu(bool *isMouseOnTextJugar, bool *isMouseOnTextSalir, Texture background);
 
 void updateGame(SnakeNode *head, Fruit *fruit);
 void drawGame(SnakeNode *head, Fruit fruit, float deltaTime, Texture snakeBody, Texture snakeHead, Texture apple, Texture background);
@@ -47,6 +50,7 @@ Fruit getFruitRandom(SnakeNode *head);
 void updatePosition(int buttonPressed, SnakeNode *head, GameScene *Scene);
 void updateDirection(int *buttonPressed);
 void drawSnake(SnakeNode *head, Vector2 start, Texture snakeBody, Texture snakeHead);
+bool verifyTextPosition(const char *text, int fontSize, int x, int y);
 
 int main()
 {
@@ -54,22 +58,22 @@ int main()
     srand(time(NULL));
     InitWindow(screenWidth, screenHeight, "Snake Game");
 
-    SetTargetFPS(10);
-    GameScene Scene = PLAY;
+    GameScene Scene = MAIN_MENU;
     SnakeNode *head = initializeSnake((int)MAX_COL / 2, (int)MAX_ROWS / 2);
+    Fruit fruit = getFruitRandom(head);
+
     int buttonPressed = STOP;
     float deltaTime;
     float elapsedTime = 0.0f;
+    bool isMouseOnTextJugar = false;
+    bool isMouseOnTextSalir = false;
+    bool closeGame = false;
     SetTargetFPS(165);
-    Fruit fruit = getFruitRandom(head);
 
     Texture apple = LoadTexture("assets/textures/FoodApple.png");
     Texture snakeBody = LoadTexture("assets/textures/SnakeBody.png");
     Texture snakeHead = LoadTexture("assets/textures/SnakeHead.png");
     Texture background = LoadTexture("assets/background/pxfuel.png");
-
-    // background.height = screenHeight;
-    // background.width = screenWidth;
 
     apple.height = RECT_HEIGHT;
     apple.width = RECT_WIDTH;
@@ -80,7 +84,7 @@ int main()
     snakeHead.height = RECT_HEIGHT + 10;
     snakeHead.width = RECT_WIDTH + 10;
 
-    while (!WindowShouldClose())
+    while (!WindowShouldClose() && !closeGame)
     {
         deltaTime = GetFrameTime();
         elapsedTime += deltaTime;
@@ -89,61 +93,129 @@ int main()
             ToggleFullscreen();
         }
 
-        // printf("X: %d, Y: %d\n", head->MainSnake.posX, head->MainSnake.posY);
-        // printf("DELTATIME: %f\n", deltaTime);
         switch (Scene)
         {
         case MAIN_MENU:
-            // Scene = updateMenu();
-            drawMenu();
+            Scene = updateMenu(&isMouseOnTextJugar, &isMouseOnTextSalir);
+            drawMenu(&isMouseOnTextJugar, &isMouseOnTextSalir, background);
             break;
         case PLAY:
             updateDirection(&buttonPressed);
-            if (elapsedTime >= 1.0f / SNAKE_SPEED)
+
+            if (elapsedTime >= 1.0f / SNAKE_SPEED) // Modify snake speed
             {
                 updatePosition(buttonPressed, head, &Scene);
                 elapsedTime = 0.0f;
             }
 
             updateGame(head, &fruit);
-            // printf("%.2f\n", elapsedTime);
-
             drawGame(head, fruit, deltaTime, snakeBody, snakeHead, apple, background);
-            break;
 
+            break;
+        case GAME_OVER:
+            BeginDrawing();
+            DrawTexture(background, 0, 0, WHITELIGHT);
+            centerTextYandX("HAS PERDIDO", 70, -95, 0, DARKPURPLE);
+            centerTextYandX("HAS PERDIDO", 70, -100, 0, WHITE);
+            centerTextYandX("Presione ENTER para volver al menu", 40, 3, 0, DARKGREEN);
+            centerTextYandX("Presione ENTER para volver al menu", 40, 0, 0, GREEN);
+            EndDrawing();
+
+            if (IsKeyPressed(KEY_ENTER))
+            {
+                deleteSnake(head);
+                head = initializeSnake((int)MAX_COL / 2, (int)MAX_ROWS / 2);
+                buttonPressed = STOP;
+                Scene = MAIN_MENU;
+            }
+
+            break;
+        case LEAVE:
+            closeGame = true;
+            break;
         default:
             break;
         }
     }
 
-    CloseWindow();
-
     deleteSnake(head);
     UnloadTexture(apple);
     UnloadTexture(snakeBody);
     UnloadTexture(snakeHead);
-
+    CloseWindow();
     return 0;
 }
 
-/*GameScene updateMenu()
+GameScene updateMenu(bool *isMouseOnTextJugar, bool *isMouseOnTextSalir)
 {
 
-}*/
+    if (verifyTextPosition("JUGAR", 60, 0, 0))
+    {
+        *isMouseOnTextJugar = true;
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        {
+            return PLAY;
+        }
+    }
+    else
+    {
+        *isMouseOnTextJugar = false;
+    }
 
-void drawMenu()
+    if (verifyTextPosition("SALIR", 30, 0, 50))
+    {
+        *isMouseOnTextSalir = true;
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        {
+            return LEAVE;
+        }
+    }
+    else
+    {
+        *isMouseOnTextSalir = false;
+    }
+
+    return MAIN_MENU;
+}
+
+void drawMenu(bool *isMouseOnTextJugar, bool *isMouseOnTextSalir, Texture background)
 {
     BeginDrawing();
-    ClearBackground(BLACK);
-    centerTextYandX("JUGAR", 60, 0, 0, WHITE);
-    centerTextYandX("SALIR", 30, 50, 0, WHITE);
+
+    DrawTexture(background, 0, 0, WHITELIGHT);
+
+    centerTextYandX("SNAKE GAME", 100, -85, 0, DARKPURPLE);
+    centerTextYandX("SNAKE GAME", 100, -90, 0, PURPLE);
+
+    centerTextYandX("JUGAR", 60, 5, 0, GRAY);
+    centerTextYandX("SALIR", 30, 53, 0, GRAY);
+
+    if (*isMouseOnTextJugar)
+    {
+        centerTextYandX("JUGAR", 60, 0, 0, YELLOW);
+    }
+    else
+    {
+
+        centerTextYandX("JUGAR", 60, 0, 0, WHITE);
+    }
+
+    if (*isMouseOnTextSalir)
+    {
+        centerTextYandX("SALIR", 30, 50, 0, YELLOW);
+    }
+    else
+    {
+
+        centerTextYandX("SALIR", 30, 50, 0, WHITE);
+    }
+
     EndDrawing();
 }
 
 void updateGame(SnakeNode *head, Fruit *fruit)
 {
-
-    Vector2 fruitPosition = {(float)fruit->posX, (float)fruit->posY};
+    Vector2 fruitPosition = {(float)fruit->posX, (float)fruit->posY}; /* Add node if the snake head position is in fruit position*/
     if (head->MainSnake.posX == fruit->posX)
     {
         if (head->MainSnake.posY == fruit->posY)
@@ -170,9 +242,10 @@ void drawGame(SnakeNode *head, Fruit fruit, float deltaTime, Texture snakeBody, 
 
     bool switchGreen = false;
 
+    // Draw background
     BeginDrawing();
-    ClearBackground(BLACK);
     DrawTexture(background, 0, 0, WHITELIGHT);
+
     for (int i = 0; i < MAX_COL; i++)
     {
         for (int j = 0; j < MAX_ROWS; j++)
@@ -192,9 +265,15 @@ void drawGame(SnakeNode *head, Fruit fruit, float deltaTime, Texture snakeBody, 
         }
     }
 
+    //Draw Text
+    centerTextYandX("SNAKE GAME", 100, -397, 0, DARKPURPLE);
+    centerTextYandX("SNAKE GAME", 100, -400, 0, PURPLE);
+
+    // Draw Snake
     Vector2 start = {(float)startX, (float)startY};
     drawSnake(head, start, snakeBody, snakeHead);
 
+    // Draw fruit
     posFruitX = startX + fruit.posX * (RECT_WIDTH + 1);
     posFruitY = startY + fruit.posY * (RECT_HEIGHT + 1);
     DrawTexture(apple, posFruitX, posFruitY, WHITE);
@@ -204,6 +283,7 @@ void drawGame(SnakeNode *head, Fruit fruit, float deltaTime, Texture snakeBody, 
 
 void updatePosition(int buttonPressed, SnakeNode *head, GameScene *Scene)
 {
+
     SnakeNode *current = head->next;
     int prevX;
     int prevY;
@@ -215,6 +295,7 @@ void updatePosition(int buttonPressed, SnakeNode *head, GameScene *Scene)
     prevY = head->MainSnake.posY;
     prevDegrees = head->MainSnake.degrees;
 
+    // Copy position from the head to each part of the body
     while (current != NULL)
     {
         tempX = current->MainSnake.posX;
@@ -232,6 +313,7 @@ void updatePosition(int buttonPressed, SnakeNode *head, GameScene *Scene)
         current = current->next;
     }
 
+    // Move snake depending what button was pressed.
     switch (buttonPressed)
     {
     case LEFT:
@@ -251,37 +333,40 @@ void updatePosition(int buttonPressed, SnakeNode *head, GameScene *Scene)
         head->MainSnake.degrees = 180.0f;
         break;
     }
+
     current = head->next;
+
+    // Verify Collision
     while (current != NULL)
     {
         if (head->MainSnake.posX == current->MainSnake.posX)
         {
             if (head->MainSnake.posY == current->MainSnake.posY)
             {
-                // *Scene = GAME_OVER;
-                printf("GAME OVER\n");
+                *Scene = GAME_OVER;
             }
         }
         current = current->next;
     }
 
+    // Verify collision with walls
     if (head->MainSnake.posX >= MAX_COL)
     {
-        printf("GAME OVER\n");
+        *Scene = GAME_OVER;
     }
     if (head->MainSnake.posY >= MAX_ROWS)
     {
-        printf("GAME OVER\n");
+        *Scene = GAME_OVER;
     }
 
     if (head->MainSnake.posY <= -1)
     {
-        printf("GAME OVER\n");
+        *Scene = GAME_OVER;
     }
 
     if (head->MainSnake.posX <= -1)
     {
-        printf("GAME OVER\n");
+        *Scene = GAME_OVER;
     }
 }
 
@@ -347,7 +432,7 @@ void drawSnake(SnakeNode *head, Vector2 start, Texture snakeBody, Texture snakeH
     SnakeNode *currentNode = head;
     int posXSnake;
     int posYSnake;
-    Vector2 origin = {(float)snakeBody.width / 2, (float)snakeBody.height / 2};
+    Vector2 origin = {(float)snakeBody.width / 2, (float)snakeBody.height / 2}; // WARNING: Assuming snakebody (width and height) are int.
 
     if (currentNode != NULL) // Draw the head
     {
@@ -358,7 +443,7 @@ void drawSnake(SnakeNode *head, Vector2 start, Texture snakeBody, Texture snakeH
         currentNode = currentNode->next;
     }
 
-    while (currentNode != NULL) // Draw the Body
+    while (currentNode != NULL) // Draw the body
     {
         posXSnake = start.x + currentNode->MainSnake.posX * (RECT_WIDTH + 1);
         posYSnake = start.y + currentNode->MainSnake.posY * (RECT_HEIGHT + 1);
@@ -367,4 +452,24 @@ void drawSnake(SnakeNode *head, Vector2 start, Texture snakeBody, Texture snakeH
 
         currentNode = currentNode->next;
     }
+}
+
+bool verifyTextPosition(const char *text, int fontSize, int x, int y)
+{
+    Vector2 mousePosition = GetMousePosition();
+
+    int textWidth;
+    int PosX;
+    int PosY;
+
+    textWidth = MeasureText(text, fontSize);
+    PosX = ((screenWidth - textWidth) / 2) + x;
+    PosY = ((screenHeight - fontSize) / 2) + y;
+
+    bool isMouseInside = (mousePosition.x >= PosX) &&
+                         (mousePosition.x <= PosX + textWidth) &&
+                         (mousePosition.y >= PosY) &&
+                         (mousePosition.y <= PosY + fontSize);
+
+    return isMouseInside;
 }
