@@ -1,6 +1,3 @@
-[submodule "Bank-Simulation-Python"]
-	path = Bank-Simulation-Python
-	url = https://github.com/keiwv/Bank-Simulation-Python.git
 [submodule "Practica-3"]
 	path = Practica-3
 	url = https://github.com/keiwv/Bank-Simulation-Python.git
