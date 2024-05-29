@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>Resumen del Reporte de Pr&aacute;ctica 4 con Prolog</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <h1 id="resumen-del-reporte-de-práctica-4-con-prolog">Resumen del Reporte de Práctica 4 con Prolog</h1>
+<h2 id="introducción">Introducción</h2>
+<p>Prolog es un lenguaje de programación lógica utilizado en inteligencia artificial y lingüística computacional. Es un lenguaje declarativo donde la programación se realiza mediante declaraciones de hechos y reglas.</p>
+<h2 id="curso-de-prolog">Curso de Prolog</h2>
+<h3 id="introducción-1">Introducción</h3>
+<p>La programación lógica se diferencia de la programación tradicional en que se proporciona una base de conocimientos y la máquina encuentra respuestas basadas en esa base, a diferencia de los pasos específicos que siguen los algoritmos en la programación funcional.</p>
+<h3 id="qué-es-prolog">¿Qué es Prolog?</h3>
+<p>Prolog es un lenguaje lógico y declarativo adecuado para programas que implican cálculos simbólicos o no numéricos, como en la inteligencia artificial.</p>
+<h4 id="elementos-de-prolog">Elementos de Prolog</h4>
+<ul>
+<li><strong>Hechos:</strong> Predicados que son verdaderos.</li>
+<li><strong>Reglas:</strong> Extensiones de hechos con cláusulas condicionales.</li>
+<li><strong>Preguntas:</strong> Utilizadas para ejecutar el programa y obtener respuestas.</li>
+</ul>
+<h4 id="aplicaciones-de-prolog">Aplicaciones de Prolog</h4>
+<ul>
+<li>Recuperación de bases de datos inteligentes</li>
+<li>Comprensión del lenguaje natural</li>
+<li>Lenguaje de especificación</li>
+<li>Aprendizaje automático</li>
+<li>Planificación de robots</li>
+<li>Sistemas de automatización</li>
+<li>Resolución de problemas</li>
+</ul>
+<h3 id="environment-setup">Environment Setup</h3>
+<p>Prolog se puede instalar en el siguiente link <a href="http://www.gprolog.org/">http://www.gprolog.org/</a> en Windows, Mac &amp; Linux</p>
+<h3 id="hello-world">Hello World</h3>
+<p>Para escribir &quot;Hello World&quot; en Prolog:</p>
+<pre><code>write('Hello World').
+</code></pre>
+<blockquote>
+<p>Después de cada línea, debe usar un símbolo de punto (.) para mostrar que la línea ha terminado.
+Antes de ejecutar el archivo *.pl, debemos almacenar el archivo en el directorio donde apunta la consola de GNU Prolog.</p>
+</blockquote>
+<h2 id="crear-y-ejecutar-un-programa-prolog">Crear y Ejecutar un Programa Prolog</h2>
+<p>Cree un archivo con extensión <code>.pl</code> y escriba el siguiente código:</p>
+<pre><code>main :- 
+    write('This is sample Prolog program'),
+    write(' This program is written into hello_world.pl file').
+
+</code></pre>
+<p>Para ejecutar utilice:</p>
+<pre><code>[hello_world].
+</code></pre>
+<h2 id="conceptos-básicos">Conceptos Básicos</h2>
+<h3 id="hechos">Hechos</h3>
+<p>Un hecho es una relación explícita entre objetos y propiedades que son incondicionalmente verdaderos.</p>
+<h4 id="pautas-para-escribir-hechos">Pautas para escribir hechos</h4>
+<ul>
+<li>Los nombres de propiedades/relaciones comienzan con letras minúsculas.</li>
+<li>El nombre de la relación aparece como primer término.</li>
+<li>Los objetos aparecen como argumentos separados por comas entre paréntesis.</li>
+<li>Un punto (.) debe poner fin a un hecho.</li>
+<li>Los objetos también comienzan con letras minúsculas.</li>
+</ul>
+<pre><code>Sintaxis:
+relation(object1, object2, ...).
+</code></pre>
+<pre><code>Ejemplo
+cat(tom).
+loves_to_eat(kunal, pasta).
+of_color(hair, black).
+loves_to_play_games(nawaz).
+lazy(pratyusha).
+</code></pre>
+<h4 id="reglas">REGLAS</h4>
+<p>Una regla es una relación implícita entre objetos, condicionalmente verdadera.</p>
+<pre><code>Sintaxis:
+rule_name(object1, object2, ...) :- fact/rule(object1, object2, ...).
+P :- Q;R.   % se entiende como: P :- Q. P :- R.
+P :- Q,R;S,T,U.  % se entiende como: P :- (Q,R);(S,T,U).
+
+</code></pre>
+<pre><code>Ejemplo:
+happy(lili) :- dances(lili).
+hungry(tom) :- search_for_food(tom).
+friends(jack, bili) :- lovesCricket(jack), lovesCricket(bili).
+goToPlay(ryan) :- isClosed(school), free(ryan).
+</code></pre>
+<h4 id="consultas-queries">Consultas (QUERIES)</h4>
+<p>Las consultas son preguntas sobre relaciones entre objetos y propiedades.</p>
+<pre><code>Ejemplo:
+girl(priya).
+girl(tiyasha).
+girl(jaya).
+can_cook(priya).
+</code></pre>
+<h2 id="relaciones">Relaciones</h2>
+<pre><code>female(pam).
+female(liz).
+female(pat).
+female(ann).
+male(jim).
+male(bob).
+male(tom).
+male(peter).
+parent(pam, bob).
+parent(tom, bob).
+parent(tom, liz).
+parent(bob, ann).
+parent(bob, pat).
+parent(pat, jim).
+parent(bob, peter).
+parent(peter, jim).
+
+mother(X, Y) :- parent(X, Y), female(X).
+father(X, Y) :- parent(X, Y), male(X).
+haschild(X) :- parent(X, _).
+sister(X, Y) :- parent(Z, X), parent(Z, Y), female(X), X \== Y.
+brother(X, Y) :- parent(Z, X), parent(Z, Y), male(X), X \== Y.
+</code></pre>
+<p>Output:</p>
+<pre><code>| ?- [family].
+| ?- parent(X, jim).
+X = pat ;
+X = peter
+
+| ?- mother(X, Y).
+X = pam, Y = bob ;
+X = pat, Y = jim ;
+
+| ?- haschild(X).
+X = pam ;
+X = tom ;
+X = bob ;
+X = pat ;
+X = peter
+
+| ?- sister(X, Y).
+X = liz, Y = bob ;
+X = ann, Y = pat ;
+X = pat, Y = ann ;
+</code></pre>
+<h4 id="recursión-en-la-relación-familiar">Recursión en la relación familiar</h4>
+<p>Estas relaciones son de naturaleza estática. También podemos crear algunas relaciones recursivas.</p>
+<pre><code>predecessor(X, Z) :- parent(X, Z).
+predecessor(X, Z) :- parent(X, Y), predecessor(Y, Z).
+</code></pre>
+<p>Ouput:</p>
+<pre><code>| ?- [family_rec].
+| ?- predecessor(peter, X).
+X = jim ;
+no
+| ?- trace.
+| ?- predecessor(bob, X).
+X = ann ;
+X = pat ;
+X = peter ;
+X = jim ;
+</code></pre>
+<h2 id="objeto-de-datos">Objeto de datos</h2>
+<p>Los átomos son una variación de las constantes. Pueden ser cualquier nombre u objeto. Hay algunas reglas que se deben seguir cuando intentamos utilizar Atoms como se indica a continuación</p>
+<ul>
+<li>azahar</li>
+<li>b59</li>
+<li>b_59</li>
+<li>b_59AB</li>
+<li>b_x25</li>
+<li>antara_sarkar</li>
+</ul>
+<p><strong>Cadenas de caracteres especiales</strong><br>
+Ejemplos:</p>
+<ul>
+<li>&lt;---&gt;</li>
+<li>=======&gt;</li>
+<li>...</li>
+<li>.:.</li>
+<li>::=</li>
+</ul>
+<p><strong>Cadenas de caracteres entre comillas simples</strong></p>
+<p>Esto es útil si queremos tener un átomo que comience con mayúscula. Al encerrarlo entre comillas, lo distinguimos de las variables.</p>
+<ul>
+<li>‘Rubai'</li>
+<li>‘Arindam_Chatterjee'</li>
+<li>‘Sumit Mitra'</li>
+</ul>
+<p><strong>Números</strong></p>
+<p>Prolog también admite números reales, pero normalmente el caso de uso de números de punto flotante es mucho menor en los programas Prolog, porque Prolog es para cálculos simbólicos y no numéricos.</p>
+<p><strong>Las variables se encuentran en la sección Objetos simples</strong></p>
+<p>Las variables se pueden utilizar en muchos de estos casos en nuestro programa Prolog, que hemos visto anteriormente. Entonces existen algunas reglas para definir variables en Prolog.</p>
+<p>Podemos definir variables de Prolog, de modo que las variables sean cadenas de letras, dígitos y caracteres de subrayado. Comienzan con una letra mayúscula o un carácter de subrayado.</p>
+<ul>
+<li>X</li>
+<li>Sum</li>
+<li>Memer_name</li>
+<li>Student_list</li>
+<li>Shoppinglist</li>
+<li>_a50</li>
+<li>_15</li>
+</ul>
+<p><strong>Variables anónimas en PROLOG</strong></p>
+<p>Las variables anónimas no tienen nombre. Las variables anónimas en el prólogo se escriben con un solo carácter de subrayado '_'. Y una cosa importante es que cada variable anónima individual se trata como diferente. No son iguales.</p>
+<p>Ahora la pregunta es, ¿dónde deberíamos utilizar estas variables anónimas?</p>
+<p>Supongamos que en nuestra base de conocimientos tenemos algunos datos: &quot;jim odia a tom&quot;, &quot;pat odia a bob&quot;. Entonces, si Tom quiere saber quién lo odia, puede usar variables. Sin embargo, si quiere comprobar si hay alguien que lo odia, podemos utilizar variables anónimas. Entonces, cuando queremos usar la variable, pero no queremos revelar el valor de la variable, podemos usar variables anónimas.</p>
+<pre><code class="language-prolog">hates(jim,tom).
+hates(pat,bob).
+hates(dog,fox).
+hates(peter,tom).
+</code></pre>
+<p>Output:</p>
+<pre><code>yes
+| ?- hates(X,tom).
+
+X = jim ? ;
+
+X = peter
+
+yes
+| ?- hates(_,tom).
+
+true ? ;
+
+(16 ms) yes
+| ?- hates(_,pat).
+
+no
+| ?- hates(_,fox).
+
+true ? ;
+
+no
+| ?-
+</code></pre>
+<h4 id="operadores">Operadores</h4>
+<p><strong>Comparación de operadores en Prolog</strong></p>
+<p>Los operadores de comparación se utilizan para comparar dos ecuaciones o estados.
+Ejemplo:</p>
+<pre><code>| ?- 1+2=:=2+1.
+
+yes
+| ?- 1+2=2+1.
+
+no
+| ?- 1+A=B+2.
+
+A = 2
+B = 1
+
+yes
+| ?- 5&lt;10.
+
+yes
+| ?- 5&gt;10.
+
+no
+| ?- 10=\=100.
+
+yes
+</code></pre>
+<p><strong>Operadores aritméticos en Prolog</strong>
+Los operadores aritméticos se utilizan para realizar operaciones aritméticas.</p>
+<p>Ejemplo:</p>
+<pre><code>calc :- X is 100 + 200,write('100 + 200 is '),write(X),nl,
+        Y is 400 - 150,write('400 - 150 is '),write(Y),nl,
+        Z is 10 * 300,write('10 * 300 is '),write(Z),nl,
+        A is 100 / 30,write('100 / 30 is '),write(A),nl,
+        B is 100 // 30,write('100 // 30 is '),write(B),nl,
+        C is 100 ** 2,write('100 ** 2 is '),write(C),nl,
+        D is 100 mod 30,write('100 mod 30 is '),write(D),nl.
+</code></pre>
+<p>Output</p>
+<pre><code>| ?- change_directory('D:/TP Prolog/Sample_Codes').
+
+yes
+| ?- [op_arith].
+compiling D:/TP Prolog/Sample_Codes/op_arith.pl for byte code...
+D:/TP Prolog/Sample_Codes/op_arith.pl compiled, 6 lines read - 2390 bytes written, 11 ms
+
+yes
+| ?- calc.
+100 + 200 is 300
+400 - 150 is 250
+10 * 300 is 3000
+100 / 30 is 3.3333333333333335
+100 // 30 is 3
+100 ** 2 is 10000.0
+100 mod 30 is 10
+
+yes
+| ?-
+</code></pre>
+<h2 id="ciclos-y-toma-de-decisiones">Ciclos y toma de decisiones</h2>
+<p>Los operadores aritméticos se utilizan para realizar operaciones aritméticas.</p>
+<p>Ejemplo:</p>
+<pre><code class="language-prolog">count_to_10(<span class="hljs-number">10</span>) :- write(<span class="hljs-number">10</span>),nl.
+count_to_10(<span class="hljs-symbol">X</span>) :-
+   write(<span class="hljs-symbol">X</span>),nl,
+   <span class="hljs-symbol">Y</span> is <span class="hljs-symbol">X</span> + <span class="hljs-number">1</span>,
+   count_to_10(<span class="hljs-symbol">Y</span>).
+</code></pre>
+<p>Output</p>
+<pre><code>(16 ms) yes
+| ?- count_to_10(3).
+3
+4
+5
+6
+7
+8
+9
+10
+
+true ?
+yes
+| ?-
+</code></pre>
+<h4 id="toma-de-decisiones">Toma de decisiones</h4>
+<p>Las declaraciones de decisión son declaraciones If-Then-Else.</p>
+<p>Sintaxis:</p>
+<pre><code>If &lt;condition&gt; is true, Then &lt;do this&gt;, Else 
+</code></pre>
+<p>Ejemplo:</p>
+<pre><code>% If-Then-Else statement
+
+gt(X,Y) :- X &gt;= Y,write('X is greater or equal').
+gt(X,Y) :- X &lt; Y,write('X is smaller').
+
+% If-Elif-Else statement
+
+gte(X,Y) :- X &gt; Y,write('X is greater').
+gte(X,Y) :- X =:= Y,write('X and Y are same').
+gte(X,Y) :- X &lt; Y,write('X is smaller').
+</code></pre>
+<p>Output:</p>
+<pre><code>yes
+| ?- gt(10,100).
+X is smaller
+
+yes
+| ?- gt(150,100).
+X is greater or equal
+
+true ?
+
+yes
+| ?- gte(10,20).
+X is smaller
+
+(15 ms) yes
+| ?- gte(100,20).
+X is greater
+
+true ?
+
+yes
+| ?- gte(100,100).
+X and Y are same
+
+true ?
+
+yes
+| ?-
+</code></pre>
+<h4 id="conjunciones-y-disyunciones">Conjunciones y disyunciones</h4>
+<p><strong>Conjunciones</strong></p>
+<p>La conjunción (lógica Y) se puede implementar utilizando el operador coma (,). Así, dos predicados separados por coma se unen con la declaración AND. Supongamos que tenemos un predicado <code>parent(jhon, bob)</code>, que significa &quot;Jhon es padre de Bob&quot;, y otro predicado <code>male(jhon)</code>, que significa &quot;Jhon es masculino&quot;. Podemos crear otro predicado <code>padre(jhon, bob)</code>, que significa &quot;Jhon es padre de Bob&quot;. Definimos el predicado <code>padre</code> cuando es padre Y es varón.</p>
+<p><strong>Disyunciones</strong></p>
+<p>La disyunción (lógica OR) se puede implementar utilizando el operador punto y coma ;. Así, dos predicados separados por punto y coma se unen con una declaración OR. Supongamos que tenemos un predicado <code>padre(jhon, bob)</code>, que dice &quot;Jhon es padre de Bob&quot;, y otro predicado <code>madre(lili, bob)</code>, que dice &quot;Lili es madre de Bob&quot;. Si creamos otro predicado como <code>niño()</code>, esto será cierto cuando <code>padre(jhon, bob)</code> sea verdadero O <code>madre(lili, bob)</code> sea verdadero.</p>
+<p>Ejemplo:</p>
+<pre><code>parent(jhon,bob).
+parent(lili,bob).
+
+male(jhon).
+female(lili).
+
+% Conjunction Logic
+father(X,Y) :- parent(X,Y),male(X).
+mother(X,Y) :- parent(X,Y),female(X).
+
+% Disjunction Logic
+child_of(X,Y) :- father(X,Y);mother(X,Y).
+</code></pre>
+<p>Output:</p>
+<pre><code>yes
+| ?- father(jhon,bob).
+
+yes
+| ?- child_of(jhon,bob).
+
+true ?
+
+yes
+| ?- child_of(lili,bob).
+
+yes
+| ?-
+</code></pre>
+<h4 id="listas">Listas</h4>
+<p><strong>Representación de listas</strong></p>
+<p>Las listas son estructuras de datos simples comúnmente usadas en programación no numérica. Pueden contener cualquier cantidad de elementos, como por ejemplo: rojo, verde, azul, blanco y oscuro. Estas listas se representan entre corchetes, por ejemplo, <code>[rojo, verde, azul, blanco, oscuro]</code>.</p>
+<p>Una lista puede ser vacía o no vacía. En el primer caso, se representa como un átomo de Prolog, <code>[]</code>. En el segundo caso, la lista tiene dos partes:</p>
+<ul>
+<li>La cabeza de la lista, que es su primer elemento.</li>
+<li>La cola de la lista, que es el resto de los elementos.</li>
+</ul>
+<p>Por ejemplo:</p>
+<ul>
+<li><code>[a, b, c] = [x | [b, c]]</code></li>
+<li><code>[a, b, c] = [a, b | [c]]</code></li>
+<li><code>[a, b, c] = [a, b, c | []]</code></li>
+</ul>
+<h4 id="recursividad-y-estructura">Recursividad y Estructura</h4>
+<p><strong>Recursividad</strong></p>
+<p>La recursividad implica que un predicado se utilice a sí mismo (junto con otros predicados si es necesario) para determinar su verdad.</p>
+<pre><code>is_digesting(X,Y) :- just_ate(X,Y).
+is_digesting(X,Y) :- just_ate(X,Z), is_digesting(Z,Y).
+</code></pre>
+<p><strong>Estructuras de Datos</strong></p>
+<p>Las estructuras son entidades que almacenan información en múltiples partes.</p>
+<p>Por ejemplo, una fecha puede considerarse como una estructura con tres elementos: día, mes y año. Así, la fecha 9 de abril de 2020 se puede representar como: <code>fecha(9 de abril de 2020)</code>.</p>
+<p><strong>Coincidencia en Prolog</strong></p>
+<p>La coincidencia se emplea para verificar si dos términos dados son idénticos o si las variables en ambos términos pueden referirse a los mismos objetos después de instanciarse. Aquí tienes un ejemplo:</p>
+<p>Digamos que la estructura de fechas está definida como <code>fecha(D,M,2020) = fecha(D1,abr, Y1)</code>. Esto indica que <code>D = D1</code>, <code>M = abr</code>, y <code>Y1 = 2020</code>.</p>
+<p>Utilizaremos las siguientes reglas para verificar si dos términos <code>S</code> y <code>T</code> coinciden.</p>
+<p><strong>Árboles Binarios</strong></p>
+<pre><code>node(2, node(1,nil,nil), node(6, node(4,node(3,nil,nil), node(5,nil,nil)), node(7,nil,nil))
+</code></pre>
+<p>Cada nodo tiene tres campos, datos y dos nodos. Un nodo sin estructura secundaria (nodo hoja) se escribe como nodo (valor, nulo, nulo), el nodo con un solo hijo izquierdo se escribe como nodo (valor, nodo_izquierdo, nulo), el nodo con solo un hijo derecho se escribe como nodo (valor, nulo; nodo_derecho), y el nodo con ambos hijos tiene un nodo (valor, nodo_izquierdo, nodo_derecho).</p>
+<h4 id="retroceso-backtracking">Retroceso (Backtracking)</h4>
+<p>El concepto de retroceso es ampliamente utilizado en el diseño de algoritmos y en varios entornos de programación. En Prolog, el proceso de retroceso implica que el programa intenta deshacer pasos previos hasta que alcanza la solución correcta. Una vez que encuentra esa solución, se detiene el proceso.</p>
+<p>Ejemplo:</p>
+<pre><code>boy(tom).
+boy(bob).
+girl(alice).
+girl(lili).
+
+pay(X,Y) :- boy(X), girl(Y).
+</code></pre>
+<p>Output:</p>
+<pre><code>yes
+| ?- pay(X,Y).
+
+X = tom
+Y = alice ?
+
+(15 ms) yes
+| ?- pay(X,Y).
+
+X = tom
+Y = alice ? ;
+
+X = tom
+Y = lili ? ;
+
+X = bob
+Y = alice ? ;
+
+X = bob
+Y = lili
+
+yes
+| ?- trace.
+The debugger will first creep -- showing everything (trace)
+
+(16 ms) yes
+{trace}
+| ?- pay(X,Y).
+   1 1 Call: pay(_23,_24) ?
+   2 2 Call: boy(_23) ?
+   2 2 Exit: boy(tom) ?
+   3 2 Call: girl(_24) ?
+   3 2 Exit: girl(alice) ?
+   1 1 Exit: pay(tom,alice) ?
+   
+X = tom
+Y = alice ? ;
+   1 1 Redo: pay(tom,alice) ?
+   3 2 Redo: girl(alice) ?
+   3 2 Exit: girl(lili) ?
+   1 1 Exit: pay(tom,lili) ?
+   
+X = tom
+Y = lili ? ;
+   1 1 Redo: pay(tom,lili) ?
+   2 2 Redo: boy(tom) ?
+   2 2 Exit: boy(bob) ?
+   3 2 Call: girl(_24) ?
+   3 2 Exit: girl(alice) ?
+   1 1 Exit: pay(bob,alice) ?
+   
+X = bob
+Y = alice ? ;
+   1 1 Redo: pay(bob,alice) ?
+   3 2 Redo: girl(alice) ?
+   3 2 Exit: girl(lili) ?
+   1 1 Exit: pay(bob,lili) ?
+X = bob
+Y = lili
+
+yes
+{trace}
+| ?-
+</code></pre>
+<h4 id="diferente-y-no">Diferente y No.</h4>
+<p>Aquí vamos a definir dos predicados: diferente y no. El predicado diferente verifica si dos argumentos dados son iguales o no. Si son iguales, devuelve falso; de lo contrario, devuelve verdadero. Por otro lado, el predicado no se utiliza para negar una afirmación. Esto significa que si una afirmación es verdadera, entonces not(afirmación) será falsa; de lo contrario, si la afirmación es falsa, entonces not(afirmación) será verdadera.</p>
+<p>Entonces, el concepto de &quot;diferente&quot; se puede expresar de tres maneras distintas, como se muestra a continuación.</p>
+<p>Ejemplo:</p>
+<pre><code>different(X, X) :- !, fail.
+different(X, Y).
+</code></pre>
+<p>Output:</p>
+<pre><code>
+yes
+| ?- different(100,200).
+
+yes
+| ?- different(100,100).
+
+no
+| ?- different(abc,def).
+
+yes
+| ?- different(abc,abc).
+
+no
+| ?-
+</code></pre>
+<h2 id="entradas-y-salidas">Entradas y Salidas</h2>
+<p>Hasta este momento, hemos observado cómo escribir un programa y realizar consultas en la consola para su ejecución. En ocasiones, mostramos información en la consola que está previamente definida en nuestro código de Prolog. Ahora exploraremos más a fondo las operaciones de escritura y lectura utilizando Prolog. Estas técnicas corresponden al manejo de entradas y salidas.</p>
+<p><strong>The Write() predicate</strong>
+Ejemplo:</p>
+<pre><code>| ?- write(56).
+56
+
+yes
+| ?- write('hello').
+hello
+
+yes
+| ?- write('hello'),nl,write('world').
+hello
+world
+
+yes
+| ?- write(&quot;ABCDE&quot;)
+.
+[65,66,67,68,69]
+
+yes
+</code></pre>
+<p><strong>The read() Predicate</strong>
+Ejemplo:</p>
+<pre><code class="language-prolog">cube :-
+   write(<span class="hljs-string">&#x27;Write a number: &#x27;</span>),
+   read(<span class="hljs-symbol">Number</span>),
+   process(<span class="hljs-symbol">Number</span>).
+process(stop) :- !.
+process(<span class="hljs-symbol">Number</span>) :-
+   <span class="hljs-symbol">C</span> is <span class="hljs-symbol">Number</span> * <span class="hljs-symbol">Number</span> * <span class="hljs-symbol">Number</span>,
+   write(<span class="hljs-string">&#x27;Cube of &#x27;</span>),write(<span class="hljs-symbol">Number</span>),write(<span class="hljs-string">&#x27;: &#x27;</span>),write(<span class="hljs-symbol">C</span>),nl, cube.
+</code></pre>
+<p><strong>The tab() Predicate</strong>
+Ejemplo:</p>
+<pre><code class="language-prolog">| ?- write(<span class="hljs-string">&#x27;hello&#x27;</span>),tab(<span class="hljs-number">15</span>),write(<span class="hljs-string">&#x27;world&#x27;</span>).
+hello          world
+
+yes
+| ?- write(<span class="hljs-string">&#x27;We&#x27;</span>),tab(<span class="hljs-number">5</span>),write(<span class="hljs-string">&#x27;will&#x27;</span>),tab(<span class="hljs-number">5</span>),write(<span class="hljs-string">&#x27;use&#x27;</span>),tab(<span class="hljs-number">5</span>),write(<span class="hljs-string">&#x27;tabs&#x27;</span>).
+<span class="hljs-symbol">We</span>    will  use   tabs
+
+yes
+| ?-
+</code></pre>
+<p><strong>Reading/Writing Files</strong></p>
+<p>Comandos:</p>
+<pre><code class="language-prolog">| ?- told(<span class="hljs-string">&#x27;myFile.txt&#x27;</span>).
+uncaught exception: error(existence_error(procedure,told/<span class="hljs-number">1</span>),top_level/<span class="hljs-number">0</span>)
+| ?- told(<span class="hljs-string">&quot;myFile.txt&quot;</span>).
+uncaught exception: error(existence_error(procedure,told/<span class="hljs-number">1</span>),top_level/<span class="hljs-number">0</span>)
+| ?- tell(<span class="hljs-string">&#x27;myFile.txt&#x27;</span>).
+
+yes
+| ?- tell(<span class="hljs-string">&#x27;myFile.txt&#x27;</span>).
+
+yes
+| ?- write(<span class="hljs-string">&#x27;Hello World&#x27;</span>).
+
+yes
+| ?- write(<span class="hljs-string">&#x27; Writing into a file&#x27;</span>),tab(<span class="hljs-number">5</span>),write(<span class="hljs-string">&#x27;myFile.txt&#x27;</span>),nl.
+
+yes
+| ?- write(<span class="hljs-string">&quot;Write some ASCII values&quot;</span>).
+
+yes
+| ?- told.
+
+yes
+| ?-
+</code></pre>
+<p>Output en myFile.txt</p>
+<pre><code>Hello World Writing into a file     myFile.txt
+[87,114,105,116,101,32,115,111,109,101,32,65,83,67,73,73,32,118,97,108,117,101,115]
+</code></pre>
+<p><strong>Manipulando caracteres</strong>
+Con las funciones read() y write() podemos leer o escribir el valor de átomos, predicados, cadenas, etc. En esta sección, exploraremos cómo escribir caracteres individuales en el flujo de salida actual y cómo leer desde el flujo de entrada actual. Para realizar estas tareas, existen algunos predicados predefinidos.</p>
+<p>Ejemplo:</p>
+<pre><code>| ?- put(97),put(98),put(99),put(100),put(101).
+abcde
+
+yes
+| ?- put(97),put(66),put(99),put(100),put(101).
+aBcde
+
+(15 ms) yes
+| ?- put(65),put(66),put(99),put(100),put(101).
+ABcde
+
+yes
+| ?-put_char('h'),put_char('e'),put_char('l'),put_char('l'),put_char('o').
+hello
+
+yes
+| ?-
+</code></pre>
+<h2 id="predicados-integrados">Predicados Integrados.</h2>
+<p><strong>Descomposición de Estructuras</strong>
+Vamos a explorar otro grupo de predicados integrados que se encargan de descomponer estructuras. Anteriormente, hemos trabajado con términos identificativos. Sin embargo, al usar estructuras compuestas, no es posible utilizar una variable para verificar o crear un functor, ya que esto provocará un error. Por lo tanto, el nombre del functor no puede ser representado mediante una variable.</p>
+<p><img src="file:///c:\Repositorios\PVBI_Paradigmas-Programacion_942\Practica-4\image.png" alt="alt text"></p>
+<p>Ejemplo:</p>
+<pre><code>X = tree, Y = X(maple).
+Syntax error Y=X&lt;&gt;(maple)
+</code></pre>
+<p><img src="file:///c:\Repositorios\PVBI_Paradigmas-Programacion_942\Practica-4\image-1.png" alt="alt text"></p>
+<h2 id="arbol-de-estructura-de-datos-case-study">Arbol de estructura de datos (Case study)</h2>
+<p><img src="file:///c:\Repositorios\PVBI_Paradigmas-Programacion_942\Practica-4\image-2.png" alt="alt text"></p>
+<ul>
+<li>op(500, xfx, ‘is_parent’).</li>
+<li>op(500, xfx, ‘is_sibling_of’).</li>
+<li>op(500, xfx, ‘is_at_same_level’).</li>
+<li>And another predicate namely leaf_node(Node)</li>
+<li>a is_parent b, or is_parent(a, b). So this indicates that node a is the parent of node b.</li>
+<li>X is_sibling_of Y or is_sibling_of(X,Y). This indicates that X is the sibling of node Y. So the rule is, if another node Z is parent of X and Z is also the parent of Y and X and Y are different, then X and Y are siblings.</li>
+<li>leaf_node(Node). A node (Node) is said to be a leaf node when a node has no children.</li>
+<li>X is_at_same_level Y, or is_at_same_level(X,Y). This will check whether X and Y are at the same level or not. So the condition is when X and Y are same, then it returns true, otherwise W is the parent of X, Z is the parent of Y and W and Z are at the same level.</li>
+</ul>
+<p>Ejemplo:</p>
+<pre><code>/* The tree database */
+
+:- op(500,xfx,'is_parent').
+
+a is_parent b. c is_parent g. f is_parent l. j is_parent q.
+a is_parent c. c is_parent h. f is_parent m. j is_parent r.
+a is_parent d. c is_parent i. h is_parent n. j is_parent s.
+b is_parent e. d is_parent j. i is_parent o. m is_parent t.
+b is_parent f. e is_parent k. i is_parent p. n is_parent u.
+n 
+is_parent v.
+/* X and Y are siblings i.e. child from the same parent */
+
+:- op(500,xfx,'is_sibling_of').
+
+X is_sibling_of Y :- Z is_parent X,
+                     Z is_parent Y,
+                     X \== Y.
+leaf_node(Node) :- \+ is_parent(Node,Child). % Node grounded
+
+/* X and Y are on the same level in the tree. */
+
+:-op(500,xfx,'is_at_same_level').
+X is_at_same_level X .
+X is_at_same_level Y :- W is_parent X,
+                        Z is_parent Y,
+                        W is_at_same_level Z.
+</code></pre>
+<p>Output:</p>
+<pre><code>
+yes
+| ?- i is_parent p.
+
+yes
+| ?- i is_parent s.
+
+no
+| ?- is_parent(i,p).
+
+yes
+| ?- e is_sibling_of f.
+
+true ?
+
+yes
+| ?- is_sibling_of(e,g).
+
+no
+| ?- leaf_node(v).
+
+yes
+| ?- leaf_node(a).
+
+no
+| ?- is_at_same_level(l,s).
+
+true ?
+
+yes
+| ?- l is_at_same_level v.
+
+no
+| ?-
+</code></pre>
+<p><strong>Más de estructura de datos</strong></p>
+<p>Consideremos el mismo árbol aquí.</p>
+<p>We will define other operations −</p>
+<ul>
+<li>path(Node)</li>
+<li>locate(Node)</li>
+<li>path(Node) − This will display the path from the root node to the given node. To solve this, suppose X is parent of Node, then find path(X), then write X. When root node ‘a’ is reached, it will stop.</li>
+<li>locate(Node) − This will locate a node (Node) from the root of the tree. In this case, we will call the path(Node) and write the Node.</li>
+</ul>
+<p>Ejemplo:</p>
+<pre><code>path(a).                             /* Can start at a. */
+path(Node) :- Mother is_parent Node, /* Choose parent, */
+              path(Mother),          /* find path and then */ 
+              write(Mother),
+              write(' --&gt; ').
+              
+/* Locate node by finding a path from root down to the node */
+locate(Node) :- path(Node),
+                write(Node),
+                nl.
+</code></pre>
+
+            
+            
+        </body>
+        </html>
